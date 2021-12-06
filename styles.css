@@ -1,0 +1,21 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+}
+
+.game-container {
+    display: grid;
+    grid-template-columns: repeat(3, 50px);
+}
+
+.game-container p {
+    padding: 10px;
+    text-align: center;
+    background-color: lightgray;
+    border: 1px solid black;
+}
