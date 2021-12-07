@@ -1,7 +1,6 @@
 // tic-tac-toe game created by Mark Akom Ntow
 const gameContainer = document.querySelector('.game-container');
 
-
 function Player(name, maker) {
     const playerName = name;
     const playerMoves = [];
@@ -21,6 +20,17 @@ const gameBoard = (() => {
 })();
 
 const gameControl = ((board) => {
+    let displayMsg = null;
+    const winningOutcome = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7]
+    ]
     let currentPlayer = player1;
     const buildGame = () => {
         board.forEach((box, index)=> {
@@ -40,23 +50,52 @@ const gameControl = ((board) => {
 
     const evaluateMoves = (player) => {
         let output = '';
+        let isEqual = false;
         player.playerMoves.sort((a, b) => a - b);
-            let arr = player.playerMoves;
-            if (Math.abs(arr[1] - arr[0]) === Math.abs(arr[1] - arr[2])) {
-                output = `${player.playerName} wins`;
+        let arr = player.playerMoves;
+
+        for (let i = 0; i < winningOutcome.length; i++) {
+           if (arr.indexOf(winningOutcome[i][0]) > -1 &&
+                arr.indexOf(winningOutcome[i][1]) > -1 &&
+                arr.indexOf(winningOutcome[i][2]) > -1  
+           ) {
+               isEqual = true;
+               break;
             }
-            player.playerMoves.splice(0, 3);
-            return output;
+        }
+
+        if (isEqual) {
+           output = `${player.playerName} wins`;
+        }            
+            
+        return output;
     }
 
-    const checkWinner = () => {
-        if (player1.playerMoves.length === 3) {
-            console.log(evaluateMoves(player1))
-        }
+    const checkWinner = (player) => {
 
-        if (player2.playerMoves.length === 3) {
-            console.log(player2);
+        if (player.playerMoves.length > 2) {
+            displayMsg = evaluateMoves(player);
+
+            if (displayMsg) {
+                return;
+            }
         }
+        // check for a draw
+        const isADraw = board.every((val) => val === 'x' || val === 'o');
+            if (isADraw) {
+                displayMsg = `It's A Draw`;
+            }
+    }
+
+    const reset = () => {
+        board = ['', '', '', '', '', '', '', '', ''];
+        [...gameContainer.childNodes].forEach(child => {
+            gameContainer.removeChild(child);
+        });
+        player1.playerMoves = [];
+        player2.playerMoves = [];
+        displayMsg = null;
+        buildGame();
     }
 
     const playRound = (e) => {
@@ -64,20 +103,25 @@ const gameControl = ((board) => {
         if (elm.tagName === 'P') {
             console.log(currentPlayer.playerMaker);
 
+            // check who is currently playing
+
             if (elm.textContent === '') {
                 updateBoard(elm);
-                checkWinner();
+                checkWinner(currentPlayer);
+                if (displayMsg) {
+                    alert(displayMsg);
+                    reset();
+                }
             }
-
             // change the current player
-            (currentPlayer.playerMaker === 'x') ? currentPlayer = player2 : currentPlayer = player1;
+            currentPlayer.playerMaker === 'x' ? currentPlayer = player2 : currentPlayer = player1;
         }
     };
 
-
     return {
         buildGame,
-        playRound
+        playRound,
+        displayMsg
     };
 })(gameBoard.board);
 

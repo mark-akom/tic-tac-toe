@@ -14,7 +14,10 @@ h1 {
 }
 
 .game-container p {
-    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
     text-align: center;
     background-color: lightgray;
     border: 1px solid black;
