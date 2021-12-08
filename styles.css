@@ -8,6 +8,11 @@ h1 {
     text-align: center;
 }
 
+.game-body {
+    display: flex;
+    justify-content: center;
+}
+
 .game-container {
     display: grid;
     grid-template-columns: repeat(3, 50px);
@@ -58,4 +63,30 @@ h1 {
 .player-v-player div svg, .player-v-cpu div svg {
     height: 52px;
     width: 52px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+form .input-fields {
+    display: flex;
+    gap: 15px;
+}
+
+form .input-fields input {
+    display: block;
+    font-size: 18px;
+    padding: 4px 8px;
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+.start-btn {
+    padding: 8px 12px;
+    font-size: 18px;
+    width: 10%;
 }
