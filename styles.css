@@ -22,3 +22,40 @@ h1 {
     background-color: lightgray;
     border: 1px solid black;
 }
+
+.intro {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 20px;
+}
+
+.player-v-player, .player-v-cpu {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid;
+    cursor: pointer;
+    gap: 10px;
+}
+
+.player-v-player span, .player-v-cpu span {
+    font-weight: 700;
+}
+
+.player-v-player div, .player-v-cpu div {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.player-v-player div p, .player-v-cpu div p {
+    font-size: 28px;
+}
+
+.player-v-player div svg, .player-v-cpu div svg {
+    height: 52px;
+    width: 52px;
+}
