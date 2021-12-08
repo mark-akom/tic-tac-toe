@@ -5,6 +5,7 @@
 }
 
 h1 {
+    padding-top: 20px;
     text-align: center;
 }
 
@@ -14,8 +15,12 @@ h1 {
 }
 
 .game-container {
-    display: grid;
+    display: none;
     grid-template-columns: repeat(3, 50px);
+}
+
+.show-game-container {
+    display: grid;
 }
 
 .game-container p {
@@ -65,11 +70,20 @@ h1 {
     width: 52px;
 }
 
+.hide-intro {
+    display: none;
+}
+
 form {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    display: none;
+}
+
+.show-form {
+    display: flex;
 }
 
 form .input-fields {
