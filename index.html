@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -43,13 +46,17 @@
         </form>
         <form class="player-v-cpu-form">
             <div class="input-fields">
-                <input type="text" class="player-1" placeholder="Player 1 Name">
+                <input type="text" class="player-1-cpu" placeholder="Player 1 Name">
             </div>
             <button type="submit" class="start-btn">Start Game</button>
         </form>
     </div>
     <div class="game-body">
         <div class="game-container"></div>
+    </div>
+    <div class="display-msg">
+        <p class="game-msg">Mark has won this round</p>
+        <button class="play-again">Play Again</button>
     </div>
     <script src="app.js"></script>
 </body>

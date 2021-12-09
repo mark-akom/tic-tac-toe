@@ -4,9 +4,20 @@
     box-sizing: border-box;
 }
 
+
+body, input, button {
+    font-family: 'Montserrat', sans-serif;
+}
+
+form .input-fields input {
+    border: 1px solid #22577E;
+    outline: none;
+}
+
 h1 {
-    padding-top: 20px;
+    padding-top: 50px;
     text-align: center;
+    color: #22577E;
 }
 
 .game-body {
@@ -16,10 +27,11 @@ h1 {
 
 .game-container {
     display: none;
-    grid-template-columns: repeat(3, 50px);
+    grid-template-columns: repeat(3, 100px);
 }
 
 .show-game-container {
+    margin-top: 50px;
     display: grid;
 }
 
@@ -27,24 +39,26 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 50px;
+    height: 100px;
     text-align: center;
     background-color: lightgray;
-    border: 1px solid black;
+    border: 1px solid #22577E;
+    font-size: 24px;
 }
 
 .intro {
     display: flex;
     justify-content: center;
     gap: 48px;
-    padding: 20px;
+    padding: 32px;
 }
 
 .player-v-player, .player-v-cpu {
     display: flex;
     align-items: center;
     padding: 20px;
-    border: 1px solid;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
     cursor: pointer;
     gap: 10px;
 }
@@ -63,6 +77,8 @@ h1 {
 
 .player-v-player div p, .player-v-cpu div p {
     font-size: 28px;
+    color: #22577E;
+    padding-top: 8px;
 }
 
 .player-v-player div svg, .player-v-cpu div svg {
@@ -95,12 +111,44 @@ form .input-fields input {
     display: block;
     font-size: 18px;
     padding: 4px 8px;
-    border: 1px solid gray;
     border-radius: 4px;
 }
 
-.start-btn {
+.start-btn, .play-again {
     padding: 8px 12px;
     font-size: 18px;
-    width: 10%;
+    width: 12%;
+    background-color: #22577E;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.display-msg {
+    padding: 40px;
+    width: 30%;
+    margin: auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    text-align: center;
+    display: none;
+    margin-top: 32px;
+}
+
+.show-display {
+    display: block;
+}
+
+.game-msg {
+    font-size: 20px;
+    padding-bottom: 16px;
+}
+
+.play-again {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 16px;
+    width: auto;
 }

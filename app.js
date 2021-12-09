@@ -1,5 +1,17 @@
 // tic-tac-toe game created by Mark Akom Ntow
 const gameContainer = document.querySelector('.game-container');
+const intro = document.querySelector('.intro');
+const playerVsPlayer = document.querySelector('.player-v-player');
+const playerVsCpu = document.querySelector('.player-v-cpu');
+const playerVsPlayerForm = document.querySelector('.player-v-player-form');
+const playerVsCpuForm = document.querySelector('.player-v-cpu-form');
+const player1Input = document.querySelector('.player-1');
+const player2Input = document.querySelector('.player-2');
+const player1CpuInput = document.querySelector('.player-1-cpu');
+const displayBox = document.querySelector('.display-msg');
+
+let player1;
+let player2;
 
 function Player(name, maker) {
     const playerName = name;
@@ -7,9 +19,6 @@ function Player(name, maker) {
     const playerMaker = maker;
     return Object.assign({}, {playerName, playerMoves, playerMaker});
 }
-
-const player1 = Player('mark', 'x');
-const player2 = Player('yo', 'o');
 
 // game board module
 const gameBoard = (() => {
@@ -31,7 +40,16 @@ const gameControl = ((board) => {
         [1, 5, 9],
         [3, 5, 7]
     ]
-    let currentPlayer = player1;
+    let currentPlayer;
+    let playingWithCpu = false;
+    const setCurrentPlayer = (player) => {
+        currentPlayer = player;
+    }
+
+    const setPlayingWithCpu = () => {
+        playingWithCpu = true;
+    }
+
     const buildGame = () => {
         board.forEach((box, index)=> {
             const spot = document.createElement('p');
@@ -42,6 +60,14 @@ const gameControl = ((board) => {
     }
 
     const updateBoard = (elm) => {
+
+        if (playingWithCpu && currentPlayer.playerName === 'CPU') {
+            gameContainer.childNodes[currentPlayer.spot].textContent = currentPlayer.playerMaker;
+            board[currentPlayer.spot] = currentPlayer.playerMaker;
+            currentPlayer.playerMoves.push(currentPlayer.spot + 1);
+            return;
+        }
+
         elm.textContent = currentPlayer.playerMaker;
         const position = elm.getAttribute('data-pos');
         board[position] = currentPlayer.playerMaker;
@@ -87,6 +113,11 @@ const gameControl = ((board) => {
             }
     }
 
+    const showMsg = () => {
+        gameContainer.classList.remove('show-game-container');
+        displayBox.classList.add('show-display');
+    }
+
     const reset = () => {
         board = ['', '', '', '', '', '', '', '', ''];
         [...gameContainer.childNodes].forEach(child => {
@@ -95,36 +126,118 @@ const gameControl = ((board) => {
         player1.playerMoves = [];
         player2.playerMoves = [];
         displayMsg = null;
+        setCurrentPlayer(player1);
         buildGame();
     }
 
     const playRound = (e) => {
         const elm = e.target;
         if (elm.tagName === 'P') {
-            console.log(currentPlayer.playerMaker);
-
-            // check who is currently playing
 
             if (elm.textContent === '') {
                 updateBoard(elm);
                 checkWinner(currentPlayer);
                 if (displayMsg) {
-                    alert(displayMsg);
-                    reset();
+                    displayBox.firstElementChild.textContent = displayMsg;
+                    showMsg();
+                    return;
                 }
             }
+
             // change the current player
-            currentPlayer.playerMaker === 'x' ? currentPlayer = player2 : currentPlayer = player1;
+            if (playingWithCpu) {
+                // get the cpu's spot
+                while(true) {
+                    const spot = Math.floor(Math.random() * board.length);
+                    if (board[spot] === '') {
+                        currentPlayer = {...player2, spot}
+                        updateBoard();
+                        checkWinner(currentPlayer);
+                        currentPlayer = player1;
+                        break;
+                    }
+                }
+                if (displayMsg) {
+                    displayBox.firstElementChild.textContent = displayMsg;
+                    showMsg();
+                    return;
+                }
+
+            } else {
+                currentPlayer.playerMaker === 'x' ? currentPlayer = player2 : currentPlayer = player1;
+            }
+
         }
     };
 
     return {
         buildGame,
         playRound,
-        displayMsg
+        setCurrentPlayer,
+        setPlayingWithCpu,
+        reset,
     };
 })(gameBoard.board);
 
-gameContainer.addEventListener('click', gameControl.playRound)
-
-gameControl.buildGame();
+(function() {
+    playerVsPlayerForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        player1 = Player(player1Input.value, 'x');
+        player2 = Player(player2Input.value, 'o');
+        gameControl.setCurrentPlayer(player1);
+        player1Input.value = '';
+        player2Input.value = '';
+    
+        intro.classList.add('hide-intro');
+        playerVsPlayerForm.classList.remove('show-form');
+    
+        gameContainer.classList.add('show-game-container');
+    });
+    
+    playerVsCpuForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        player1 = Player(player1CpuInput.value, 'x');
+        player2 = Player('CPU', 'o');
+        gameControl.setCurrentPlayer(player1);
+        gameControl.setPlayingWithCpu();
+        player1CpuInput.value = '';
+        intro.classList.add('hide-intro');
+        playerVsCpuForm.classList.remove('show-form');
+    
+        gameContainer.classList.add('show-game-container');
+    })
+    
+    gameContainer.addEventListener('click', gameControl.playRound);
+    
+    playerVsPlayer.addEventListener('click', function(){
+        if ([...playerVsPlayerForm.classList].includes('show-form')) {
+            playerVsPlayerForm.classList.remove('show-form');
+        } else {
+            if ([...playerVsCpuForm.classList].includes('show-form')) {
+                playerVsCpuForm.classList.remove('show-form');
+            } 
+            playerVsPlayerForm.classList.add('show-form');
+        }
+    });
+    
+    playerVsCpu.addEventListener('click', function(){
+        if ([...playerVsCpuForm.classList].includes('show-form')) {
+            playerVsCpuForm.classList.remove('show-form');
+        } else {
+            if ([...playerVsPlayerForm.classList].includes('show-form')) {
+                playerVsPlayerForm.classList.remove('show-form');
+            }
+            playerVsCpuForm.classList.add('show-form');
+        }
+    });
+    
+    displayBox.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            gameControl.reset();
+            gameContainer.classList.toggle('show-game-container');
+            displayBox.classList.toggle('show-display');
+        }
+    })
+    
+    gameControl.buildGame();
+})()
